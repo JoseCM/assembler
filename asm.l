@@ -25,8 +25,12 @@ IN|in                 {yylval = NULL; return (IN);}
 OUT|out               {yylval = NULL; return (OUT);}
 JMP|jmp               {yylval = NULL; return (JMP);}
 BRZ|brz               {yylval = NULL; return (BRZ);}
-BRNZ|brnz             {yylval = NULL; return (BRNZ);}
-NOP|nop               {yylval = NULL; return (NOP);}
+BRNZ|brnz                {yylval = NULL; return (BRNZ);}
+NOP|nop                  {yylval = NULL; return (NOP);}
+".org"|".ORG"            {yylval = NULL; return (ORG);}
+".equ"|".EQU"            {yylval = NULL; return (EQU);}
+".word"|".WORD"          {yylval = NULL; return (WORD);}
+".alloc"|".ALLOC"        {yylval = NULL; return (ALLOC);}
 
 (r|R){regnum}            {
                          sscanf(yytext, "%*[rR]%d", &temp);

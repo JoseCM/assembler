@@ -131,10 +131,14 @@ void print_inst(int inst){
     unsigned temp = 0x8000;
     int i;
 
+    fprintf(out, "@%d\t", location_counter);
+
     for(i = 0; i < INST_WIDTH; i++)
       (inst & (temp >> i)) ? fprintf(out, "1") : fprintf(out, "0");
 
     fprintf(out, "\n");
+
+    location_counter++;
 
 }
 
@@ -147,6 +151,8 @@ void codegen(){
       printf("COuld open output file..\n");
       return;
     }
+
+    location_counter = 0;
 
     for (i = 0; i < inst_count; i++) {
 
@@ -171,7 +177,7 @@ void codegen(){
           inst |= instList[i].opd ? (instList[i].opd->value & 0x7) << 9 : 0;
           inst |= instList[i].opa ? (instList[i].opa->value & 0x7) << 6 : 0;
           inst |= instList[i].opbim ? (instList[i].opbim->value & 0x7) << 3 : 0;
-
+          print_inst(inst);
           break;
 
         case OP_INOUT:
@@ -183,14 +189,14 @@ void codegen(){
             inst |= (instList[i].opd->value & 0x7) << 9;
             inst &= ~(0x1);
           }
-
+          print_inst(inst);
           break;
 
         case OP_LOADI:
 
           inst |= (instList[i].opd->value & 0x7) << 9;
           inst |= (instList[i].opbim->value & 0xff);
-
+          print_inst(inst);
           break;
 
         case OP_LOAD:
@@ -204,7 +210,7 @@ void codegen(){
             inst |= (instList[i].opbim->value & 0x7) << 3;
             inst &= ~(0x1);
           }
-
+          print_inst(inst);
           break;
 
         case OP_STORE:
@@ -219,12 +225,25 @@ void codegen(){
             inst |= (instList[i].opbim->value & 0x7) << 3;
             inst &= ~(0x1);
           }
+          print_inst(inst);
+          break;
 
+        case PRAGMA_ORG:
+          location_counter = instList[i].opd->value;
+          break;
+
+        case PRAGMA_WORD:
+          inst = instList[i].opd->value;
+          print_inst(inst);
+          break;
+
+        case PRAGMA_ALLOC:
+          for(i = 0; i < instList[i].opd->value; i++){
+              print_inst(0);
+          }
           break;
 
       }
-
-      print_inst(inst);
     }
 
     fclose(out);

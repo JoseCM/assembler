@@ -62,7 +62,11 @@ extern int yydebug;
     JMP = 272,
     BRZ = 273,
     BRNZ = 274,
-    NOP = 275
+    NOP = 275,
+    WORD = 276,
+    ORG = 277,
+    EQU = 278,
+    ALLOC = 279
   };
 #endif
 

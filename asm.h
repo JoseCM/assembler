@@ -23,6 +23,11 @@
 #define OP_BRNZ   0xB
 #define OP_NOP    0x0
 
+#define PRAGMA_WORD  0x10
+#define PRAGMA_EQU   0x11
+#define PRAGMA_ALLOC 0x12
+#define PRAGMA_ORG   0x13
+
 /* assembler data structures */
 
 FILE *out;
